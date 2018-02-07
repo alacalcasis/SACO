@@ -14,6 +14,8 @@
 #include <fstream>
 #include <vector>
 #include <list>
+#include <map>
+#include <algorithm>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 using namespace std;
@@ -21,14 +23,16 @@ using namespace std;
 #ifndef GRAFO_H
 #define GRAFO_H
 
-template < typename V >
+template < typename V, typename A >
 class Grafo {
-    // Representa una red compleja con vértices de tipo V.
+    // Representa una red compleja con vértices de tipo V y adyacencias de tipo A.
     /* SUPUESTOS:
      * 1. Los vértices son identificados con números de 0 a N-1, dada N la cantidad
      * total de vértices.
      * 2. El tipo V tiene definido su constructor estándar V().
-     * 3. El tipo v tiene definido su constructor de copias V(const V& orig);
+     * 3. El tipo V tiene definido su constructor de copias V(const V& orig);
+     * 4. El tipo A tiene definido su constructor estándar A().
+     * 5. El tipo A tiene definido su constructor de copias A(const A& orig);     * 
      */
 
 public:
@@ -52,7 +56,7 @@ public:
     Grafo(ifstream& archivo);
 
     // Construye una copia idéntica a orig.
-    Grafo(const Grafo< V >& orig);
+    Grafo(const Grafo< V, A >& orig);
 
     ~Grafo();
 
@@ -76,12 +80,24 @@ public:
     // NOTA: retorna por valor para que NO pueda ser modificado.
     V operator[](int idVrt) const;
 
+    // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
+    // EFE: retorna los datos de la adyacencia entre <idVrtO, idVrtD>.
+    // NOTA: retorna por valor para que NO pueda ser modificado.    
+    A obtDatoAdy(int idVrtO, int idVrtD) const;
+
     // EFE: retorna el total de arcos o adyacencias en el grafo.
     int obtTotArc() const;
 
     // EFE: retorna el total de vértices en el grafo.
     int obtTotVrt() const;
+    
+    /* MÉTODOS OBSERVADORES NO BÁSICOS*/
 
+    // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
+    // EFE: retorna en "camino" los índices de los vértices que conforman el
+    //      camino más corto entre idVrtO y idVrtD.
+    void caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino);
+    
     /* MÉTODOS MODIFICADORES BÁSICOS */
 
     // REQ: 0 <= idVrt < N.
@@ -89,89 +105,121 @@ public:
     // NOTA: retorna por referencia para que pueda ser modificado en el contexto
     // invocador.
     V& operator[](int idVrt);
+    
+    // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
+    // EFE: asigna el valor "a" a la adyacencia <idVrtO, idVrtD>.
+    void asgDatoAdy(int idVrtO, int idVrtD, const A& a);
 
 private:
-
+   
     template < typename W >
     struct Vrt {
         W w;
         list< int > lstAdy;
-
-        Vrt< W >() : w(W()), lstAdy() {
-        };
-
-        Vrt< W >(const W& ww) : w(ww), lstAdy() {
-        };
+        
+        Vrt< W >() : w(W()), lstAdy() {}; // constructor estándar de Vrt
+        Vrt< W >(const W& ww) : w(ww), lstAdy() {}; // constructor con dato de vértice
+        Vrt< W >(const Vrt< W >& vrt) : w(vrt.w), lstAdy(vrt.lstAdy) {}; // constructor de copias de Vrt
     };
 
+    // REQ: (f >= 0) && (c >= 0) && (N > 0)
+    // RET: valor único asociado a f, c y N.
+    static long fIdUnico(int f, int c, int N){
+        return ((f == c) ? 0 : (f + c + N * (3 + abs(f - c))));
+    };
+    
     vector< Vrt< V > > vectorVrts; // vector de vértices
+    map< long, A > mapAdys; // map de adyacencias
 };
 
-template < typename V >
-Grafo< V >::Grafo(int cantidadVrt, double probabilidadAdy) {
+template < typename V, typename A >
+Grafo< V, A >::Grafo(int cantidadVrt, double probabilidadAdy) {
     vectorVrts.resize(cantidadVrt, V());
     
     srand(time(NULL)); /* initialize random seed: */
     for (int i = 0; i < cantidadVrt; i++)
         for (int j = i + 1; j < cantidadVrt; j++)
-            if ((rand() % 1000) / 1000.0 < probabilidadAdy) {
+            if ((rand() % 1000) / 1000.0 < probabilidadAdy){
                 vectorVrts[i].lstAdy.push_front(j);
                 vectorVrts[j].lstAdy.push_front(i);
+                long idUnico = fIdUnico(i,j,cantidadVrt);
+                //mapAdys[idUnico] = A();
+                mapAdys.insert(typename map< long, A >::value_type(idUnico,A()));
             }
 }
 
-template < typename V >
-Grafo< V >::Grafo(ifstream& archivo) {
+template < typename V, typename A >
+Grafo< V, A >::Grafo(ifstream& archivo) {
 
 }
 
-template < typename V >
-Grafo< V >::Grafo(const Grafo< V >& orig) {
+template < typename V, typename A >
+Grafo< V, A >::Grafo(const Grafo< V, A >& orig) : vectorVrts(orig.vectorVrts), mapAdys(orig.mapAdys) {
 
 }
 
-template < typename V >
-Grafo< V >::~Grafo() {
+template < typename V, typename A >
+Grafo< V, A >::~Grafo() {
 
 }
 
-template < typename V >
-bool Grafo< V >::xstVrt(int idVrt) const {
+template < typename V, typename A >
+bool Grafo< V, A >::xstVrt(int idVrt) const {
     return idVrt < vectorVrts.size();
 }
 
-template < typename V >
-bool Grafo< V >::xstAdy(int idVrtO, int idVrtD) const {
-    return xstVrt(idVrtO) && xstVrt(idVrtD) && (find(vectorVrts.at(idVrtO).lstAdy.begin(), vectorVrts.at(idVrtO).lstAdy.end(), idVrtD) != vectorVrts.at(idVrtO).lstAdy.end());
+template < typename V, typename A >
+bool Grafo< V, A >::xstAdy(int idVrtO, int idVrtD) const {
+    return xstVrt(idVrtO) 
+            && xstVrt(idVrtD) 
+            && (find(vectorVrts.at(idVrtO).lstAdy.begin(), vectorVrts.at(idVrtO).lstAdy.end(), idVrtD) != vectorVrts.at(idVrtO).lstAdy.end())
+            && (find(vectorVrts.at(idVrtD).lstAdy.begin(), vectorVrts.at(idVrtD).lstAdy.end(), idVrtO) != vectorVrts.at(idVrtD).lstAdy.end());
 }
 
-template < typename V >
-void Grafo< V >::obtIdVrtAdy(int idVrt, vector< int >& rsp) const {
+template < typename V, typename A >
+void Grafo< V, A >::obtIdVrtAdy(int idVrt, vector< int >& rsp) const {
     for(typename list< V >::const_iterator itr = vectorVrts.at(idVrt).lstAdy.begin(); itr != vectorVrts.at(idVrt).lstAdy.end(); itr++)
         rsp.push_back(*itr);
 }
 
-template < typename V >
-V Grafo< V >::operator[](int idVrt) const {
+template < typename V, typename A >
+V Grafo< V, A >::operator[](int idVrt) const {
     return vectorVrts[idVrt];
 }
 
-template < typename V >
-int Grafo< V >::obtTotArc() const {
+template < typename V, typename A >
+A Grafo< V, A >::obtDatoAdy(int idVrtO, int idVrtD) const {
+    int N = vectorVrts.size();
+    long valorUnico = fIdUnico(idVrtO, idVrtD, N);
+    return mapAdys.at(valorUnico);
+}
+
+template < typename V, typename A >
+int Grafo< V, A >::obtTotArc() const {
     int rsl = 0;
     for (typename vector< V >::const_iterator itr = vectorVrts.begin(); itr != vectorVrts.end(); itr++)
         rsl = rsl + vectorVrts[itr].lstAdy.size();
     return rsl / 2;
 }
 
-template < typename V >
-int Grafo< V >::obtTotVrt() const {
+template < typename V, typename A >
+int Grafo< V, A >::obtTotVrt() const {
     return vectorVrts.size();
 }
 
-template < typename V >
-V& Grafo< V >::operator[](int idVrt) {
+template < typename V, typename A >
+V& Grafo< V, A >::operator[](int idVrt) {
     return vectorVrts[idVrt];
+}
+template < typename V, typename A >
+void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino){
+    
+}
+
+template < typename V, typename A >
+void Grafo< V, A >::asgDatoAdy(int idVrtO, int idVrtD, const A& a) {
+    int idUnico = fIdUnico(idVrtO, idVrtD, vectorVrts.size());
+    mapAdys[idUnico] = a;
 }
 #endif /* GRAFO_H */
 

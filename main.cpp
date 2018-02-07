@@ -11,15 +11,68 @@
  * Created on 5 de febrero de 2018, 04:26 PM
  */
 
-#include <cstdlib>
-
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+#include <iostream>
+#include <vector>
 using namespace std;
+
+#include "Grafo.h" 
 
 /*
  * 
  */
-int main(int argc, char** argv) {
 
+// REQ: (f >= 0) && (c >= 0) && (N > 0)
+// RET: valor único asociado a f, c y N.
+
+static long fIdUnico(int f, int c, int N) {
+    return ((f == c) ? 0 : (f + c + N * (3 + abs(f - c))));
+};
+
+int main(int argc, char** argv) {
+    int N = 10;
+    Grafo< int, int > grafoInts(N, 0.5);
+    vector< int > adyacentes;
+
+    cout << "adyacencias: " << endl;
+    for (int i = 0; i < N; i++) {
+        grafoInts.obtIdVrtAdy(i, adyacentes);
+        cout << "i: " << i << "->";
+        for (int j = 0; j < adyacentes.size(); j++)
+            cout << adyacentes[j] << ",";
+        cout << endl;
+        adyacentes.erase(adyacentes.begin(), adyacentes.end());
+    }
+
+    cout << "idUnicos: " << endl;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            if ((i != j) && grafoInts.xstAdy(i, j))
+                cout << fIdUnico(i, j, N) << "\t";
+            else cout << 0 << "\t";
+        cout << endl;
+    }
+
+    // asigna datos a adyacencias:
+    srand(time(NULL)); /* initialize random seed: */
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            if ((i != j) && grafoInts.xstAdy(i, j))
+                grafoInts.asgDatoAdy(i, j, rand() % 1000);
+            else grafoInts.asgDatoAdy(i, j, 0);
+    }
+    
+    cout << "datos de adyacencias: " << endl;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            if ((i != j) && grafoInts.xstAdy(i, j))
+                cout << grafoInts.obtDatoAdy(i, j) << "\t";
+            else cout << 0 << "\t";
+        cout << endl;
+    }   
+    
+    Grafo< int, int> grafoInts2(grafoInts);
     return 0;
 }
 
