@@ -23,6 +23,11 @@ Hormiga::~Hormiga() {
 }
 
 /* OBSERVADORES */
+
+int Hormiga::obtIdVrtActual() {
+    return idVrtActual;
+}
+
 vector< int > Hormiga::obtMemoria() {
     return memoria;
 }
@@ -49,14 +54,13 @@ double Hormiga::obtDeltaFerormona() {
 
 /* MODIFICADORES */
 
-// REQ: idVrtN sea válido en el laberinto que está recorriendo la hormiga.
-// EFE: asigna idVrtN como parte de la memoria de recorrido de la hormiga.
+void Hormiga::asgIdVrtActual(int idVrtActualN) {
+    idVrtActual = idVrtActualN;
+}
 
 void Hormiga::agrIdVrtMemoria(int idVrtN) {
     memoria.push_back(idVrtN);
 }
-
-// EFE: salio = false.
 
 void Hormiga::sale() {
     haSalido = true;
@@ -73,3 +77,15 @@ void Hormiga::asgRetroceso(int nr) {
 void Hormiga::asgDeltaFerormona(double ndf) {
     deltaFerormona = ndf;
 }
+
+void Hormiga::filtraVrtsPosibles(vector< int >& vrtsPosibles) {
+    // OJO: USO DE UNA LAMBDA!!!!!! --> [contexto](parámetros){uso del predicado}
+    vector< int >::iterator itr = remove_if(vrtsPosibles.begin(), vrtsPosibles.end(), [this](int i){return estaEnMemoria(i);});
+}
+
+/* MÉTODOS PRIVADOS */
+
+bool Hormiga::estaEnMemoria(int idVrt) {
+    return this->memoria.end() != find(this->memoria.begin(), this->memoria.end(), idVrt);
+};
+
