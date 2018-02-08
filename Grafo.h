@@ -11,6 +11,9 @@
  * Created on 5 de febrero de 2018, 05:49 PM
  */
 
+#ifndef GRAFO_H
+#define GRAFO_H
+
 #include <fstream>
 #include <vector>
 #include <list>
@@ -19,9 +22,6 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 using namespace std;
-
-#ifndef GRAFO_H
-#define GRAFO_H
 
 template < typename V, typename A >
 class Grafo {
@@ -58,11 +58,12 @@ public:
     // Construye una copia idéntica a orig.
     Grafo(const Grafo< V, A >& orig);
 
+    // Destructor
     ~Grafo();
 
     /* MÉTODOS OBSERVADORES BÁSICOS */
 
-    // EFE: retorna true si 0 <= indVrt < N.
+    // EFE: retorna true si 0 <= idVrt < N.
     // NOTA: idVrt significa "identificador de vértice".
     bool xstVrt(int idVrt) const;
 
@@ -96,7 +97,7 @@ public:
     // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
     // EFE: retorna en "camino" los índices de los vértices que conforman el
     //      camino más corto entre idVrtO y idVrtD.
-    void caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino);
+    void caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const;
     
     /* MÉTODOS MODIFICADORES BÁSICOS */
 
@@ -160,7 +161,6 @@ Grafo< V, A >::Grafo(const Grafo< V, A >& orig) : vectorVrts(orig.vectorVrts), m
 
 template < typename V, typename A >
 Grafo< V, A >::~Grafo() {
-
 }
 
 template < typename V, typename A >
@@ -197,8 +197,8 @@ A Grafo< V, A >::obtDatoAdy(int idVrtO, int idVrtD) const {
 template < typename V, typename A >
 int Grafo< V, A >::obtTotArc() const {
     int rsl = 0;
-    for (typename vector< V >::const_iterator itr = vectorVrts.begin(); itr != vectorVrts.end(); itr++)
-        rsl = rsl + vectorVrts[itr].lstAdy.size();
+    for (typename vector< Vrt< V > >::const_iterator itr = vectorVrts.begin(); itr != vectorVrts.end(); itr++)
+        rsl = rsl + itr->lstAdy.size();
     return rsl / 2;
 }
 
@@ -212,7 +212,7 @@ V& Grafo< V, A >::operator[](int idVrt) {
     return vectorVrts[idVrt];
 }
 template < typename V, typename A >
-void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino){
+void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
     
 }
 
