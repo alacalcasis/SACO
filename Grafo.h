@@ -151,7 +151,29 @@ Grafo< V, A >::Grafo(int cantidadVrt, double probabilidadAdy) {
 
 template < typename V, typename A >
 Grafo< V, A >::Grafo(ifstream& archivo) {
+    int x; // entero que se lee del archivo
+    int f = 0; // número de fila
+    char finLinea = ' ';
 
+    archivo >> x; // se lee la cantidad de nodos
+    vectorVrts.resize(x, Vrt< V >());
+
+    archivo >> x;
+    while (!archivo.eof()) {
+        while (!archivo.eof()&&(finLinea != 10)) { // 10 ascii de fin de línea
+            vectorVrts[f].lstAdy.push_back(x);
+            archivo >> x;
+            archivo.get(); // consume un blanco
+            finLinea = archivo.peek(); // intenta leer fin de línea
+        }
+        if (!archivo.eof()) {
+            vectorVrts[f].lstAdy.push_back(x);
+        }
+        f++; // se incrementa el índice de fila
+        archivo >> x;
+        archivo.get(); // consume un blanco final en la fila actual
+        finLinea = archivo.peek(); // consume el cambio de línea
+    }
 }
 
 template < typename V, typename A >
@@ -184,7 +206,7 @@ void Grafo< V, A >::obtIdVrtAdy(int idVrt, vector< int >& rsp) const {
 
 template < typename V, typename A >
 V Grafo< V, A >::operator[](int idVrt) const {
-    return vectorVrts[idVrt];
+    return vectorVrts[idVrt].w;
 }
 
 template < typename V, typename A >
@@ -209,7 +231,7 @@ int Grafo< V, A >::obtTotVrt() const {
 
 template < typename V, typename A >
 V& Grafo< V, A >::operator[](int idVrt) {
-    return vectorVrts[idVrt];
+    return vectorVrts[idVrt].w;
 }
 template < typename V, typename A >
 void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {

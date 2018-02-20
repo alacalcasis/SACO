@@ -8,6 +8,7 @@
       <itemPath>Grafo.h</itemPath>
       <itemPath>Hormiga.h</itemPath>
       <itemPath>Laberinto.h</itemPath>
+      <itemPath>Simulador.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -19,6 +20,7 @@
       <itemPath>Adyacencia.cpp</itemPath>
       <itemPath>Hormiga.cpp</itemPath>
       <itemPath>Laberinto.cpp</itemPath>
+      <itemPath>Simulador.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -63,6 +65,10 @@
       </item>
       <item path="Laberinto.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Simulador.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Simulador.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -99,6 +105,10 @@
       <item path="Laberinto.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Laberinto.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Simulador.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Simulador.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

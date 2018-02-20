@@ -13,10 +13,10 @@
 
 #include "Hormiga.h"
 
-Hormiga::Hormiga() : haSalido(false), destino('F'), enRetroceso(0), longitudSolucion(0), deltaFerormona(0.0) {
+Hormiga::Hormiga() : idVrtActual(0), haSalido(false), haRegresado(false), destino('F'), enRetroceso(0), longitudSolucion(0), deltaFerormona(0.0) {
 }
 
-Hormiga::Hormiga(const Hormiga& orig) : haSalido(orig.haSalido), destino(orig.destino), enRetroceso(orig.enRetroceso), longitudSolucion(orig.longitudSolucion), deltaFerormona(orig.deltaFerormona) {
+Hormiga::Hormiga(const Hormiga& orig) : haSalido(orig.haSalido), haRegresado(orig.haRegresado), destino(orig.destino), enRetroceso(orig.enRetroceso), longitudSolucion(orig.longitudSolucion), deltaFerormona(orig.deltaFerormona) {
 }
 
 Hormiga::~Hormiga() {
@@ -34,6 +34,10 @@ vector< int > Hormiga::obtMemoria() {
 
 bool Hormiga::salio() {
     return haSalido;
+}
+
+bool Hormiga::regreso(){
+    return haRegresado;
 }
 
 char Hormiga::obtDestino() {
@@ -62,8 +66,9 @@ void Hormiga::agrIdVrtMemoria(int idVrtN) {
     memoria.push_back(idVrtN);
 }
 
-void Hormiga::sale() {
+void Hormiga::salir(int idVrtInicial) {
     haSalido = true;
+    idVrtActual = idVrtInicial;
 }
 
 void Hormiga::asgDestino(char nd) {
@@ -78,8 +83,12 @@ void Hormiga::asgDeltaFerormona(double ndf) {
     deltaFerormona = ndf;
 }
 
+void Hormiga::mover(const Laberinto& lbrt){
+    
+}
+
 void Hormiga::filtraVrtsPosibles(vector< int >& vrtsPosibles) {
-    // OJO: USO DE UNA LAMBDA!!!!!! --> [contexto](parámetros){uso del predicado}
+    // USO DE UNA LAMBDA!! [contexto](parámetros){predicado}: acá el contexto es un objeto Hormiga, el parámetro es un entero en la memoria.
     vector< int >::iterator itr = remove_if(vrtsPosibles.begin(), vrtsPosibles.end(), [this](int i){return estaEnMemoria(i);});
 }
 

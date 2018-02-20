@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Adyacencia.o \
 	${OBJECTDIR}/Hormiga.o \
 	${OBJECTDIR}/Laberinto.o \
+	${OBJECTDIR}/Simulador.o \
 	${OBJECTDIR}/main.o
 
 
@@ -79,6 +80,11 @@ ${OBJECTDIR}/Laberinto.o: Laberinto.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Laberinto.o Laberinto.cpp
+
+${OBJECTDIR}/Simulador.o: Simulador.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Simulador.o Simulador.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

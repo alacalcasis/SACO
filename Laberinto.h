@@ -84,6 +84,9 @@ public:
     // EFE: retorna en "camino" los índices de los vértices que conforman el
     //      camino más corto entre idVrtO y idVrtD.
     void caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const;
+    
+    // EFE: retorna la suma total de la ferormona de las adyacencias;
+    double sumaTotalFerormona();
 
     /* MÉTODOS MODIFICADORES BÁSICOS */
     
@@ -98,6 +101,14 @@ public:
     // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
     // EFE: asigna el valor "ady" a la adyacencia <idVrtO, idVrtD>.
     void asgDatoAdy(int idVrtO, int idVrtD, const Adyacencia& ady);
+    
+    /* OTROS MODIFICADORES */
+    
+    // EFE: decrementa la cantidad de ferormona de cada una de las adyacencias en decFerormona.
+    void decrementarFerormonaAdys(double decrFerormona);
+    
+    // EFE: actualiza la valoración de las adyacencias con base en la ferormona de cada una.
+    void actualizarValoracionAdys();
     
 private:
 

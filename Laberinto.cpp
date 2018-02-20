@@ -26,15 +26,10 @@ Laberinto::~Laberinto() {
 }
 
 /* MÉTODOS OBSERVADORES BÁSICOS */
-
-// EFE: retorna true si 0 <= idVrt < N.
-// NOTA: idNdo significa "identificador de vértice".
 bool Laberinto::xstVrt(int idVrt) const {
     return laberinto.xstVrt(idVrt);
 }
 
-// REQ: 0 <= idVrtO < N && 0 <= idVrtD < N.
-// EFE: retorna true si existe adyacencia entre los vértices idVrtO e idVrtD.
 bool Laberinto::xstAdy(int idVrtO, int idVrtD) const {
     return laberinto.xstAdy(idVrtO, idVrtD);
 }
@@ -47,55 +42,71 @@ int Laberinto::obtIdVrtFinal() {
     return idVrtFinal;
 }
 
-// REQ: 0 <= idVrt < N.
-// EFE: retorna en "rsp" los identificadores idVrtj de todos los vértices 
-// adyacentes a idVrt en el grafo.
 void Laberinto::obtIdVrtAdy(int idVrt, vector< int >& rsp) const {
     laberinto.obtIdVrtAdy(idVrt, rsp);
 }
 
-// REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
-// EFE: retorna los datos de la adyacencia entre <idVrtO, idVrtD>.
-// NOTA: retorna por valor para que NO pueda ser modificado.    
 Adyacencia Laberinto::obtDatoAdy(int idVrtO, int idVrtD) const {
     return laberinto.obtDatoAdy(idVrtO, idVrtD);
 }
 
-// EFE: retorna el total de arcos o adyacencias en el grafo.
 int Laberinto::obtTotArc() const {
     laberinto.obtTotArc();
 }
 
-// EFE: retorna el total de vértices en el grafo.
 int Laberinto::obtTotVrt() const {
     laberinto.obtTotVrt();
 }
 
-/* MÉTODOS OBSERVADORES NO BÁSICOS*/
-
-// REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
-// EFE: retorna en "camino" los índices de los vértices que conforman el
-//      camino más corto entre idVrtO y idVrtD.
 void Laberinto::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
     laberinto.caminoMasCorto(idVrtO, idVrtD, camino);
 }
 
-/* MÉTODOS MODIFICADORES BÁSICOS */
+double Laberinto::sumaTotalFerormona() {
+    double suma = 0.0;
+    for (int i = 0; i < cntVrts; i++) {
+        vector<int> adyacenciasI;
+        laberinto.obtIdVrtAdy(i, adyacenciasI);
+        for (int j = 0; j < adyacenciasI.size(); j++)
+            suma += laberinto.obtDatoAdy(i, adyacenciasI[j]).obtCntFerormona();
+    }
+    return suma;
+}
 
-// REQ: 0 <= idVrtInicialN < N
-// EFE: asigna el identificador del vértice inicial del laberinto.
 void Laberinto::asgVrtInicial(int idVrtInicialN) {
     idVrtInicial = idVrtInicialN;
 }
 
-// REQ: 0 <= idVrtFinalN < N
-// EFE: asigna el identificador del vértice inicial del laberinto.    
 void Laberinto::asgVrtFinal(int idVrtFinalN) {
     idVrtFinal = idVrtFinalN;
 }
 
-// REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
-// EFE: asigna el valor "ady" a la adyacencia <idVrtO, idVrtD>.
 void Laberinto::asgDatoAdy(int idVrtO, int idVrtD, const Adyacencia& ady) {
     laberinto.asgDatoAdy(idVrtO, idVrtD, ady);
+}
+
+void Laberinto::decrementarFerormonaAdys(double decrFerormona) {
+    for (int i = 0; i < cntVrts; i++) {
+        vector<int> adyacenciasI;
+        laberinto.obtIdVrtAdy(i, adyacenciasI);
+        for (int j = 0; j < adyacenciasI.size(); j++) {
+            Adyacencia adyI = laberinto.obtDatoAdy(i, adyacenciasI[j]);
+            adyI.asgCntFerormona(adyI.obtCntFerormona() * decrFerormona);
+            laberinto.asgDatoAdy(i, adyacenciasI[j], adyI);
+        }
+    }
+}
+
+void Laberinto::actualizarValoracionAdys() {
+    double sumatoriaFerormona = sumaTotalFerormona();
+    if (sumatoriaFerormona > 0)
+        for (int i = 0; i < cntVrts; i++) {
+            vector<int> adyacenciasI;
+            laberinto.obtIdVrtAdy(i, adyacenciasI);
+            for (int j = 0; j < adyacenciasI.size(); j++) {
+                Adyacencia adyI = laberinto.obtDatoAdy(i, adyacenciasI[j]);
+                adyI.asgValoracion(adyI.obtCntFerormona() / sumatoriaFerormona);
+                laberinto.asgDatoAdy(i, adyacenciasI[j], adyI);
+            }
+        }
 }
