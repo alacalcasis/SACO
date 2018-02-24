@@ -16,6 +16,7 @@
 
 #include <vector>
 #include <algorithm>    // std::remove_if
+#include <stdlib.h>     /* srand, rand */
 using namespace std;
 
 #include "Laberinto.h"
@@ -38,7 +39,7 @@ public:
     // EFE: retorna true si la hormiga ya salió del vértice inicial.
     bool salio();
     
-    // EFE: retorna true si la hormiga ya regresó vértice inicial después de encontrar el vértice final.
+    // EFE: retorna true si la hormiga ya regresó al vértice inicial después de encontrar el vértice final.
     bool regreso();
     
     char obtDestino();
@@ -63,7 +64,8 @@ public:
     void asgRetroceso(int nr);
     void asgDeltaFerormona(double ndf);
     
-    // EFE: si la hormiga está activa, la mueve un paso.
+    // REQ: que la hormiga (*this) esté activa.
+    // EFE: la hormiga avanza a un vértice adyacente.
     void mover(const Laberinto& lbrt);
 
     /* MÉTODOS AUXILIARES */
@@ -73,12 +75,22 @@ public:
 
 private:
 
+    /* métodos privados: */
+    // REQ: memoria.size() > 0.
+    // RET: la posición anterior en la memoria de la hormiga cuando retrocede.
+    int retroceder();
+    
+    // EFE: retorna -1 en caso de que no la hormiga llegue a camino sin salida,
+    // y un idVrt válido en caso de que la hormiga pueda continuar.
+    int seleccionaAdyMasCargada(const Laberinto& lbrt);
+    
+    /* atributos privados: */
     int idVrtActual; // idVrt del vértice donde se encuentra la hormiga actualmente
     vector< int > memoria; // vector de idVrt que representa el recorrido de la hormiga
     bool haSalido; // false mientras no haya salido, true si ya salió
     bool haRegresado; // false mientras no haya regresado de idVrtFinal a idVrtInicial
     char destino; // "F"o "I", hacia adónde se dirige la hormiga
-    int enRetroceso; // si es mayor a cero indica que la hormiga está en retroceso porque topó con un camino sin salida
+    int enRetroceso; // si es mayor a cero, la hormiga está retrocediendo esta cantidad de pasos porque topó con un camino sin salida
     int longitudSolucion; // registra la longitud de la solución encontrada para moderar su aporte de ferormona en su retorno
     double deltaFerormona; // representa cuánta ferormona aporta la hormiga a cada link y se modula con base en length_solución x encuentros
 

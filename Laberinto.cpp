@@ -34,16 +34,16 @@ bool Laberinto::xstAdy(int idVrtO, int idVrtD) const {
     return laberinto.xstAdy(idVrtO, idVrtD);
 }
 
-int Laberinto::obtIdVrtInicial() {
+int Laberinto::obtIdVrtInicial() const {
     return idVrtInicial;
 }
 
-int Laberinto::obtIdVrtFinal() {
+int Laberinto::obtIdVrtFinal() const {
     return idVrtFinal;
 }
 
-void Laberinto::obtIdVrtAdy(int idVrt, vector< int >& rsp) const {
-    laberinto.obtIdVrtAdy(idVrt, rsp);
+void Laberinto::obtIdVrtAdys(int idVrt, vector< int >& rsp) const {
+    laberinto.obtIdVrtAdys(idVrt, rsp);
 }
 
 Adyacencia Laberinto::obtDatoAdy(int idVrtO, int idVrtD) const {
@@ -62,11 +62,11 @@ void Laberinto::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) co
     laberinto.caminoMasCorto(idVrtO, idVrtD, camino);
 }
 
-double Laberinto::sumaTotalFerormona() {
+double Laberinto::sumaTotalFerormona() const {
     double suma = 0.0;
     for (int i = 0; i < cntVrts; i++) {
         vector<int> adyacenciasI;
-        laberinto.obtIdVrtAdy(i, adyacenciasI);
+        laberinto.obtIdVrtAdys(i, adyacenciasI);
         for (int j = 0; j < adyacenciasI.size(); j++)
             suma += laberinto.obtDatoAdy(i, adyacenciasI[j]).obtCntFerormona();
     }
@@ -88,7 +88,7 @@ void Laberinto::asgDatoAdy(int idVrtO, int idVrtD, const Adyacencia& ady) {
 void Laberinto::decrementarFerormonaAdys(double decrFerormona) {
     for (int i = 0; i < cntVrts; i++) {
         vector<int> adyacenciasI;
-        laberinto.obtIdVrtAdy(i, adyacenciasI);
+        laberinto.obtIdVrtAdys(i, adyacenciasI);
         for (int j = 0; j < adyacenciasI.size(); j++) {
             Adyacencia adyI = laberinto.obtDatoAdy(i, adyacenciasI[j]);
             adyI.asgCntFerormona(adyI.obtCntFerormona() * decrFerormona);
@@ -102,7 +102,7 @@ void Laberinto::actualizarValoracionAdys() {
     if (sumatoriaFerormona > 0)
         for (int i = 0; i < cntVrts; i++) {
             vector<int> adyacenciasI;
-            laberinto.obtIdVrtAdy(i, adyacenciasI);
+            laberinto.obtIdVrtAdys(i, adyacenciasI);
             for (int j = 0; j < adyacenciasI.size(); j++) {
                 Adyacencia adyI = laberinto.obtDatoAdy(i, adyacenciasI[j]);
                 adyI.asgValoracion(adyI.obtCntFerormona() / sumatoriaFerormona);

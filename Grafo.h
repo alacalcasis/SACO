@@ -74,7 +74,7 @@ public:
     // REQ: 0 <= idVrt < N.
     // EFE: retorna en "rsp" los identificadores idVrtj de todos los vértices 
     // adyacentes a idVrt en el grafo.
-    void obtIdVrtAdy(int idVrt, vector< int >& rsp) const;
+    void obtIdVrtAdys(int idVrt, vector< int >& rsp) const;
 
     // REQ: 0 <= idVrt < N.
     // EFE: retorna el vértice con índice idVrt.
@@ -199,7 +199,7 @@ bool Grafo< V, A >::xstAdy(int idVrtO, int idVrtD) const {
 }
 
 template < typename V, typename A >
-void Grafo< V, A >::obtIdVrtAdy(int idVrt, vector< int >& rsp) const {
+void Grafo< V, A >::obtIdVrtAdys(int idVrt, vector< int >& rsp) const {
     for(typename list< V >::const_iterator itr = vectorVrts.at(idVrt).lstAdy.begin(); itr != vectorVrts.at(idVrt).lstAdy.end(); itr++)
         rsp.push_back(*itr);
 }

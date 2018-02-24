@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
 
     cout << "adyacencias: " << endl;
     for (int i = 0; i < N; i++) {
-        grafoInts.obtIdVrtAdy(i, adyacentes);
+        grafoInts.obtIdVrtAdys(i, adyacentes);
         cout << "i: " << i << "->";
         for (int j = 0; j < adyacentes.size(); j++)
             cout << adyacentes[j] << ",";

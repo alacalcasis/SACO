@@ -16,6 +16,7 @@
 
 #include <algorithm>    // std::count_if
 #include <vector>
+#include <time.h>       /* time para randomizar moviento al azar de las horimgas */
 using namespace std;
 
 #include "Laberinto.h"

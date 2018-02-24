@@ -58,14 +58,14 @@ public:
     // EFE: retorna true si existe adyacencia entre los vértices idVrtO e idVrtD.
     bool xstAdy(int idNdO, int idVrtD) const;
 
-    int obtIdVrtInicial();
+    int obtIdVrtInicial() const;
     
-    int obtIdVrtFinal();
+    int obtIdVrtFinal() const;
     
     // REQ: 0 <= idVrt < N.
     // EFE: retorna en "rsp" los identificadores idVrtj de todos los vértices 
     // adyacentes a idVrt en el grafo.
-    void obtIdVrtAdy(int idVrt, vector< int >& rsp) const;
+    void obtIdVrtAdys(int idVrt, vector< int >& rsp) const;
 
     // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
     // EFE: retorna los datos de la adyacencia entre <idVrtO, idVrtD>.
@@ -86,7 +86,7 @@ public:
     void caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const;
     
     // EFE: retorna la suma total de la ferormona de las adyacencias;
-    double sumaTotalFerormona();
+    double sumaTotalFerormona() const;
 
     /* MÉTODOS MODIFICADORES BÁSICOS */
     
