@@ -53,7 +53,7 @@ void Simulador::ejecutar(int p) {
         laberinto.actualizarValoracionAdys();
         
         // Contar cuántas hormigas aún no han regresado al idVrtInicial o nido:
-        // USO DE LAMBDA!! [contexto](parámetros){predicado}: acá el contexto es hormigas y el parámetro es el índice
+        // USO DE LAMBDA!! [contexto](parámetros){predicado}: acá el contexto es hormigas y el parámetro es h
         cntdHormigasSinRegresar = count_if(hormigas.begin(), hormigas.end(), [](Hormiga h){return !h.regreso();});
     }
 }
