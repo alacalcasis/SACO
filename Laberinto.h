@@ -83,7 +83,15 @@ public:
     // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
     // EFE: retorna en "camino" los índices de los vértices que conforman el
     //      camino más corto entre idVrtO y idVrtD.
-    void caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const;
+    //      retorna la longitud de este camino.
+    // NOTA: se usa algoritmo de Dijkstra.
+    int caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const;
+    
+    // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
+    // EFE: retorna en "camino" los índices de los vértices que conforman el
+    //      camino más corto entre idVrtO y idVrtD encontrado por la colonia de hormigas.
+    //      retorna la longitud de este camino.    
+    int caminoEncontrado(int idVrtO, int idVrtD, int* camino) const;
     
     // EFE: retorna la suma total de la ferormona de las adyacencias;
     double sumaTotalFerormona() const;

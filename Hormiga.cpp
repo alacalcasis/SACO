@@ -143,4 +143,7 @@ int Hormiga::retroceder() {
 int Hormiga::seleccionaAdyMasCargada(const Laberinto& lbrt) {
     vector< int > adys;
     lbrt.obtIdVrtAdys(idVrtActual, adys);
+    // falta filtrar las adyacencias que llevan a vértices ya recorridos
+    // falta seleccionar la adyacencia más cargada de entre las filtradas,
+    // recordar que en esta selección se usa azar también --> to-report l-selecciona-por-valoracion [ posibles ]
 }
