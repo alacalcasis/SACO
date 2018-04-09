@@ -63,6 +63,7 @@ int Laberinto::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) con
 }
 
 int Laberinto::caminoEncontrado(int idVrtO, int idVrtD, int* camino) const {
+    // generarlo usando la valoración de las adyacencias
 }
 
 double Laberinto::sumaTotalFerormona() const {
