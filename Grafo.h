@@ -18,6 +18,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <stack>
 #include <algorithm>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
@@ -235,7 +236,27 @@ V& Grafo< V, A >::operator[](int idVrt) {
 }
 template < typename V, typename A >
 void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
-    
+    vector< int > rutaEnCnst;
+    vector< int > caminoMasCorto;
+    stack< int > pila;
+    pila.push(idVrtO);
+    while (!pila.empty()) {
+        int vrt = pila.top();
+        rutaEnCnst.push_back(vrt);
+        pila.pop();
+        if (vrt == idVrtD) { // se encontró ruta nueva
+            if (rutaEnCnst.size() < caminoMasCorto.size() && caminoMasCorto.size() > 0)
+                caminoMasCorto = rutaEnCnst;
+            while (!pila.empty() && find(vectorVrts.at(rutaEnCnst.back()).ady.begin(),
+                    vectorVrts.at(rutaEnCnst.back()).ady.end(),
+                    pila.top()) == vectorVrts.at(rutaEnCnst.back()).ady.end()) rutaEnCnst.pop_back();
+        } else { // colocar en la pila los adyacentes que no forman ciclos en la ruta
+            for (typename vector< int >::const_iterator itr = vectorVrts.at(vrt).ady.begin();
+                    itr != vectorVrts.at(vrt).ady.end(); itr++)
+                if (find(rutaEnCnst.begin(), rutaEnCnst.end(), *itr) == rutaEnCnst.end())
+                    pila.push(*itr);
+        }
+    }    
 }
 
 template < typename V, typename A >
