@@ -200,9 +200,11 @@ bool Grafo< V, A >::xstAdy(int idVrtO, int idVrtD) const {
 }
 
 template < typename V, typename A >
-void Grafo< V, A >::obtIdVrtAdys(int idVrt, vector< int >& rsp) const {
+void Grafo< V, A >::obtIdVrtAdys(int idVrt, vector< int >& rspRetornar) const {
+    vector< int > rsp;
     for(typename list< V >::const_iterator itr = vectorVrts.at(idVrt).lstAdy.begin(); itr != vectorVrts.at(idVrt).lstAdy.end(); itr++)
         rsp.push_back(*itr);
+    rspRetornar = rsp;
 }
 
 template < typename V, typename A >
@@ -245,18 +247,22 @@ void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino
         rutaEnCnst.push_back(vrt);
         pila.pop();
         if (vrt == idVrtD) { // se encontró ruta nueva
-            if (rutaEnCnst.size() < caminoMasCorto.size() && caminoMasCorto.size() > 0)
+            rutaEnCnst.push_back(idVrtD);
+            if ((rutaEnCnst.size() < caminoMasCorto.size()) && caminoMasCorto.size() > 0)
                 caminoMasCorto = rutaEnCnst;
-            while (!pila.empty() && find(vectorVrts.at(rutaEnCnst.back()).ady.begin(),
-                    vectorVrts.at(rutaEnCnst.back()).ady.end(),
-                    pila.top()) == vectorVrts.at(rutaEnCnst.back()).ady.end()) rutaEnCnst.pop_back();
+            else if (caminoMasCorto.size() == 0)
+                caminoMasCorto = rutaEnCnst;
+            while (!pila.empty() && find(vectorVrts.at(rutaEnCnst.back()).lstAdy.begin(),
+                    vectorVrts.at(rutaEnCnst.back()).lstAdy.end(),
+                    pila.top()) == vectorVrts.at(rutaEnCnst.back()).lstAdy.end()) rutaEnCnst.pop_back();
         } else { // colocar en la pila los adyacentes que no forman ciclos en la ruta
-            for (typename vector< int >::const_iterator itr = vectorVrts.at(vrt).ady.begin();
-                    itr != vectorVrts.at(vrt).ady.end(); itr++)
+            for (typename list< int >::const_iterator itr = vectorVrts.at(vrt).lstAdy.begin();
+                    itr != vectorVrts.at(vrt).lstAdy.end(); itr++)
                 if (find(rutaEnCnst.begin(), rutaEnCnst.end(), *itr) == rutaEnCnst.end())
                     pila.push(*itr);
         }
-    }    
+    }
+    camino = caminoMasCorto;
 }
 
 template < typename V, typename A >

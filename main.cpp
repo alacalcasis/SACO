@@ -31,7 +31,7 @@ static long fIdUnico(int f, int c, int N) {
 };
 
 int main(int argc, char** argv) {
-    int N = 10;
+    /*int N = 10;
     Grafo< int, int > grafoInts(N, 0.5);
     vector< int > adyacentes;
 
@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
     }
 
     // asigna datos a adyacencias:
-    srand(time(NULL)); /* initialize random seed: */
+    srand(time(NULL)); 
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++)
             if ((i != j) && grafoInts.xstAdy(i, j))
@@ -72,7 +72,24 @@ int main(int argc, char** argv) {
         cout << endl;
     }   
     
-    Grafo< int, int> grafoInts2(grafoInts);
+    Grafo< int, int> grafoInts2(grafoInts); */
+    ifstream archGrafoMuyPeqNoCnx ("grafoMuyPeqNoCnx.txt", ios::in);
+    Grafo< int, int > grafoMuyPeqNoCnx(archGrafoMuyPeqNoCnx);
+    
+    /*for(int i = 0; i < grafoMuyPeqNoCnx.obtTotVrt(); i++){
+        vector< int > adys;
+        grafoMuyPeqNoCnx.obtIdVrtAdys(i, adys);
+        cout << "adys de: " << i << ": ";
+        for(int j = 0; j < adys.size(); j++)
+            cout << adys[j] << ',';
+        cout << endl;
+    }*/
+        
+    vector< int > caminoEncontrado;
+    grafoMuyPeqNoCnx.caminoMasCorto(0, 7, caminoEncontrado);
+    for(int i = 0; i < caminoEncontrado.size(); i++)
+        cout << caminoEncontrado[i] << ',';
+    cout << endl;
     return 0;
 }
 
