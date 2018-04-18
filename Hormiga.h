@@ -33,8 +33,8 @@ public:
     virtual ~Hormiga();
 
     /* OBSERVADORES */
-    int obtIdVrtActual();
-    vector< int > obtMemoria();
+    //int obtIdVrtActual();
+    //vector< int > obtMemoria();
     
     // EFE: retorna true si la hormiga ya salió del vértice inicial.
     bool salio();
@@ -42,40 +42,40 @@ public:
     // EFE: retorna true si la hormiga ya regresó al vértice inicial después de encontrar el vértice final.
     bool regreso();
     
+    // EFE: retorna 'F' o 'I' para indicar hacia adónde se dirige
     char obtDestino();
-    int obtDireccion();
-    int obtLongitudSolucion();
-    double obtDeltaFerormona();
+    
+    // EFE: retorna la longitud de la solución encontrada por la hormiga.
+    //int obtLongitudSolucion();
+    
+    //double obtDeltaFerormona();
 
     /* MODIFICADORES */
 
     // REQ: idVrtN sea válido en el laberinto que está recorriendo la hormiga.
-    void asgIdVrtActual(int idVrtActualN);
+    //void asgIdVrtActual(int idVrtActualN);
 
     // REQ: idVrtN sea válido en el laberinto que está recorriendo la hormiga.
     // EFE: asigna idVrtN como parte de la memoria de recorrido de la hormiga.
-    void agrIdVrtMemoria(int idVrtN);
+    //void agrIdVrtMemoria(int idVrtN);
 
     // EFE: activa la hormiga y la ubica en nodoInicial.
     void salir(int idVrtInicial);
 
     // REQ: nd == 'F' || nd == 'I'
-    void asgDestino(char nd);
-    void asgRetroceso(int nr);
-    void asgDeltaFerormona(double ndf);
+    //void asgDestino(char nd);
+    //void asgRetroceso(int nr);
+    //void asgDeltaFerormona(double ndf);
     
     // REQ: que la hormiga (*this) esté activa.
     // EFE: la hormiga avanza a un vértice adyacente.
     void mover(const Laberinto& lbrt);
 
-    /* MÉTODOS AUXILIARES */
-    // REQ: que los idVrt en vrtsPosibles sean índices válidos de vértices en el laberinto que está recorriendo la hormiga.
-    // EFE: elimina de vrtsPosibles los idVrt que ya aparecen en la memoria.
-    void filtraVrtsPosibles(vector< int >& vrtsPosibles);
+
 
 private:
+    /* MÉTODOS PRIVADOS */
 
-    /* métodos privados: */
     // REQ: memoria.size() > 0.
     // RET: la posición anterior en la memoria de la hormiga cuando retrocede.
     int retroceder();
@@ -83,6 +83,13 @@ private:
     // EFE: retorna -1 en caso de que no la hormiga llegue a camino sin salida,
     // y un idVrt válido en caso de que la hormiga pueda continuar.
     int seleccionaAdyMasCargada(const Laberinto& lbrt);
+
+    // REQ: que los idVrt en vrtsPosibles sean índices válidos de vértices en el laberinto que está recorriendo la hormiga.
+    // EFE: elimina de vrtsPosibles los idVrt que ya aparecen en la memoria.
+    void filtraVrtsPosibles(vector< int >& vrtsPosibles);
+
+    // RET: true si idVrt está en memoria y false en caso contrario.
+    bool estaEnMemoria(int idVrt);
     
     /* atributos privados: */
     int idVrtActual; // idVrt del vértice donde se encuentra la hormiga actualmente
@@ -94,8 +101,7 @@ private:
     int longitudSolucion; // registra la longitud de la solución encontrada para moderar su aporte de ferormona en su retorno
     double deltaFerormona; // representa cuánta ferormona aporta la hormiga a cada link y se modula con base en length_solución x encuentros
 
-    // RET: true si idVrt está en memoria y false en caso contrario.
-    bool estaEnMemoria(int idVrt);
+
 };
 #endif /* HORMIGA_H */
 

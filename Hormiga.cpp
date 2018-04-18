@@ -24,13 +24,13 @@ Hormiga::~Hormiga() {
 
 /* OBSERVADORES */
 
-int Hormiga::obtIdVrtActual() {
-    return idVrtActual;
-}
+//int Hormiga::obtIdVrtActual() {
+//    return idVrtActual;
+//}
 
-vector< int > Hormiga::obtMemoria() {
-    return memoria;
-}
+//vector< int > Hormiga::obtMemoria() {
+//    return memoria;
+//}
 
 bool Hormiga::salio() {
     return haSalido;
@@ -44,44 +44,40 @@ char Hormiga::obtDestino() {
     return destino;
 }
 
-int Hormiga::obtDireccion() {
-    return enRetroceso;
-}
-
-int Hormiga::obtLongitudSolucion() {
-    return longitudSolucion;
-}
-
-double Hormiga::obtDeltaFerormona() {
-    return deltaFerormona;
-}
+//int Hormiga::obtLongitudSolucion() {
+//    return longitudSolucion;
+//}
+//
+//double Hormiga::obtDeltaFerormona() {
+//    return deltaFerormona;
+//}
 
 /* MODIFICADORES */
 
-void Hormiga::asgIdVrtActual(int idVrtActualN) {
-    idVrtActual = idVrtActualN;
-}
-
-void Hormiga::agrIdVrtMemoria(int idVrtN) {
-    memoria.push_back(idVrtN);
-}
+//void Hormiga::asgIdVrtActual(int idVrtActualN) {
+//    idVrtActual = idVrtActualN;
+//}
+//
+//void Hormiga::agrIdVrtMemoria(int idVrtN) {
+//    memoria.push_back(idVrtN);
+//}
 
 void Hormiga::salir(int idVrtInicial) {
     haSalido = true;
     idVrtActual = idVrtInicial;
 }
 
-void Hormiga::asgDestino(char nd) {
-    destino = nd;
-}
-
-void Hormiga::asgRetroceso(int nr) {
-    enRetroceso = nr;
-}
-
-void Hormiga::asgDeltaFerormona(double ndf) {
-    deltaFerormona = ndf;
-}
+//void Hormiga::asgDestino(char nd) {
+//    destino = nd;
+//}
+//
+//void Hormiga::asgRetroceso(int nr) {
+//    enRetroceso = nr;
+//}
+//
+//void Hormiga::asgDeltaFerormona(double ndf) {
+//    deltaFerormona = ndf;
+//}
 
 void Hormiga::mover(const Laberinto& lbrt) {
     if (enRetroceso > 0) // verifica si la hormiga está en retroceso
