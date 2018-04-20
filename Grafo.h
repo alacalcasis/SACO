@@ -92,14 +92,14 @@ public:
 
     // EFE: retorna el total de vértices en el grafo.
     int obtTotVrt() const;
-    
+
     /* MÉTODOS OBSERVADORES NO BÁSICOS*/
 
     // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
     // EFE: retorna en "camino" los índices de los vértices que conforman el
     //      camino más corto entre idVrtO y idVrtD.
     void caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const;
-    
+
     /* MÉTODOS MODIFICADORES BÁSICOS */
 
     // REQ: 0 <= idVrt < N.
@@ -107,29 +107,35 @@ public:
     // NOTA: retorna por referencia para que pueda ser modificado en el contexto
     // invocador.
     V& operator[](int idVrt);
-    
+
     // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
     // EFE: asigna el valor "a" a la adyacencia <idVrtO, idVrtD>.
     void asgDatoAdy(int idVrtO, int idVrtD, const A& a);
 
 private:
-   
+
     template < typename W >
     struct Vrt {
         W w;
         list< int > lstAdy;
-        
-        Vrt< W >() : w(W()), lstAdy() {}; // constructor estándar de Vrt
-        Vrt< W >(const W& ww) : w(ww), lstAdy() {}; // constructor con dato de vértice
-        Vrt< W >(const Vrt< W >& vrt) : w(vrt.w), lstAdy(vrt.lstAdy) {}; // constructor de copias de Vrt
+
+        Vrt< W >() : w(W()), lstAdy() {
+        }; // constructor estándar de Vrt
+
+        Vrt< W >(const W& ww) : w(ww), lstAdy() {
+        }; // constructor con dato de vértice
+
+        Vrt< W >(const Vrt< W >& vrt) : w(vrt.w), lstAdy(vrt.lstAdy) {
+        }; // constructor de copias de Vrt
     };
 
     // REQ: (f >= 0) && (c >= 0) && (N > 0)
     // RET: valor único asociado a f, c y N.
-    static long fIdUnico(int f, int c, int N){
+
+    static long fIdUnico(int f, int c, int N) {
         return ((f == c) ? 0 : (f + c + N * (3 + abs(f - c))));
     };
-    
+
     vector< Vrt< V > > vectorVrts; // vector de vértices
     map< long, A > mapAdys; // map de adyacencias
 };
@@ -137,16 +143,16 @@ private:
 template < typename V, typename A >
 Grafo< V, A >::Grafo(int cantidadVrt, double probabilidadAdy) {
     vectorVrts.resize(cantidadVrt, V());
-    
+
     srand(time(NULL)); /* initialize random seed: */
     for (int i = 0; i < cantidadVrt; i++)
         for (int j = i + 1; j < cantidadVrt; j++)
-            if ((rand() % 1000) / 1000.0 < probabilidadAdy){
+            if ((rand() % 1000) / 1000.0 < probabilidadAdy) {
                 vectorVrts[i].lstAdy.push_front(j);
                 vectorVrts[j].lstAdy.push_front(i);
-                long idUnico = fIdUnico(i,j,cantidadVrt);
+                long idUnico = fIdUnico(i, j, cantidadVrt);
                 //mapAdys[idUnico] = A();
-                mapAdys.insert(typename map< long, A >::value_type(idUnico,A()));
+                mapAdys.insert(typename map< long, A >::value_type(idUnico, A()));
             }
 }
 
@@ -193,8 +199,8 @@ bool Grafo< V, A >::xstVrt(int idVrt) const {
 
 template < typename V, typename A >
 bool Grafo< V, A >::xstAdy(int idVrtO, int idVrtD) const {
-    return xstVrt(idVrtO) 
-            && xstVrt(idVrtD) 
+    return xstVrt(idVrtO)
+            && xstVrt(idVrtD)
             && (find(vectorVrts.at(idVrtO).lstAdy.begin(), vectorVrts.at(idVrtO).lstAdy.end(), idVrtD) != vectorVrts.at(idVrtO).lstAdy.end())
             && (find(vectorVrts.at(idVrtD).lstAdy.begin(), vectorVrts.at(idVrtD).lstAdy.end(), idVrtO) != vectorVrts.at(idVrtD).lstAdy.end());
 }
@@ -202,7 +208,7 @@ bool Grafo< V, A >::xstAdy(int idVrtO, int idVrtD) const {
 template < typename V, typename A >
 void Grafo< V, A >::obtIdVrtAdys(int idVrt, vector< int >& rspRetornar) const {
     vector< int > rsp;
-    for(typename list< V >::const_iterator itr = vectorVrts.at(idVrt).lstAdy.begin(); itr != vectorVrts.at(idVrt).lstAdy.end(); itr++)
+    for (typename list< V >::const_iterator itr = vectorVrts.at(idVrt).lstAdy.begin(); itr != vectorVrts.at(idVrt).lstAdy.end(); itr++)
         rsp.push_back(*itr);
     rspRetornar = rsp;
 }
@@ -236,6 +242,7 @@ template < typename V, typename A >
 V& Grafo< V, A >::operator[](int idVrt) {
     return vectorVrts[idVrt].w;
 }
+
 template < typename V, typename A >
 void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
     vector< int > rutaEnCnst;
@@ -247,11 +254,10 @@ void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino
         rutaEnCnst.push_back(vrt);
         pila.pop();
         if (vrt == idVrtD) { // se encontró ruta nueva
-            rutaEnCnst.push_back(idVrtD);
-            if ((rutaEnCnst.size() < caminoMasCorto.size()) && caminoMasCorto.size() > 0)
-                caminoMasCorto = rutaEnCnst;
-            else if (caminoMasCorto.size() == 0)
-                caminoMasCorto = rutaEnCnst;
+            if (caminoMasCorto.size() > 0)
+                if (rutaEnCnst.size() < caminoMasCorto.size())
+                    caminoMasCorto = rutaEnCnst;
+                else caminoMasCorto = rutaEnCnst;
             while (!pila.empty() && find(vectorVrts.at(rutaEnCnst.back()).lstAdy.begin(),
                     vectorVrts.at(rutaEnCnst.back()).lstAdy.end(),
                     pila.top()) == vectorVrts.at(rutaEnCnst.back()).lstAdy.end()) rutaEnCnst.pop_back();
