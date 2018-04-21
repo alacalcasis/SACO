@@ -283,7 +283,7 @@ void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino
             idVrtActual = idVrtNuevo;
         }
     }
-    if (visitado[idVrtD]){
+    if (visitado[idVrtD]){ // se asignan los idVrt a camino
         int idVrtVisitado = idVrtD;
         camino.push_back(idVrtD);
         for(int i = 0; i < distancia[idVrtD] - 1; i++){
@@ -292,8 +292,7 @@ void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino
         }
         camino.push_back(idVrtO); // para completar el camino
         reverse(camino.begin(),camino.end());
-    }
-    // se asignan los idVrt a camino
+    } 
 }
 
 template < typename V, typename A >
