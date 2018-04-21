@@ -136,6 +136,9 @@ private:
         return ((f == c) ? 0 : (f + c + N * (3 + abs(f - c))));
     };
 
+    // RET: true si falta algún nodo por visitar y false en caso contrario.
+    bool faltanPorVisitar(vector< bool >& v) const;
+
     vector< Vrt< V > > vectorVrts; // vector de vértices
     map< long, A > mapAdys; // map de adyacencias
 };
@@ -244,31 +247,53 @@ V& Grafo< V, A >::operator[](int idVrt) {
 }
 
 template < typename V, typename A >
+bool Grafo< V, A >::faltanPorVisitar(vector<bool>& v) const {
+    bool rsl = true;
+    int i = 0;
+    while (i < vectorVrts.size() && ( rsl = v[i] )) 
+        i++;
+    return !rsl;
+}
+
+template < typename V, typename A >
 void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
-    vector< int > rutaEnCnst;
-    vector< int > caminoMasCorto;
-    stack< int > pila;
-    pila.push(idVrtO);
-    while (!pila.empty()) {
-        int vrt = pila.top();
-        rutaEnCnst.push_back(vrt);
-        pila.pop();
-        if (vrt == idVrtD) { // se encontró ruta nueva
-            if (caminoMasCorto.size() > 0)
-                if (rutaEnCnst.size() < caminoMasCorto.size())
-                    caminoMasCorto = rutaEnCnst;
-                else caminoMasCorto = rutaEnCnst;
-            while (!pila.empty() && find(vectorVrts.at(rutaEnCnst.back()).lstAdy.begin(),
-                    vectorVrts.at(rutaEnCnst.back()).lstAdy.end(),
-                    pila.top()) == vectorVrts.at(rutaEnCnst.back()).lstAdy.end()) rutaEnCnst.pop_back();
-        } else { // colocar en la pila los adyacentes que no forman ciclos en la ruta
-            for (typename list< int >::const_iterator itr = vectorVrts.at(vrt).lstAdy.begin();
-                    itr != vectorVrts.at(vrt).lstAdy.end(); itr++)
-                if (find(rutaEnCnst.begin(), rutaEnCnst.end(), *itr) == rutaEnCnst.end())
-                    pila.push(*itr);
+    // Basado en algoritmo de Dijkstra: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+    vector< bool > visitado(vectorVrts.size(), false); // visitados[idVrt] == true indica que idVrt ha sido visitado
+    vector< int > distancia(vectorVrts.size(), INT_MAX); // distancia[idVrt] representa la menor distancia encontrada de idVrtO a idVrt
+    vector< int > antecesor(vectorVrts.size(), -1); // antecesor[idVrt] representa el antecesor a idVrt en el camino más corto de idVrtO a idVrt
+    int idVrtActual = idVrtO;
+    distancia[idVrtActual] = 0;
+    while (faltanPorVisitar(visitado) && !visitado[idVrtD] && idVrtActual >= 0) {
+        for (list< int >::const_iterator itr = vectorVrts[idVrtActual].lstAdy.begin(); itr != vectorVrts[idVrtActual].lstAdy.end(); itr++)
+            if (!visitado[*itr] && (distancia[*itr] > distancia[idVrtActual] + 1)) {
+                // se modifica la distancia de idVrtAdyacente al idVrtActual porque es menor la distancia a través de idVrtActual
+                distancia[*itr] = distancia[idVrtActual] + 1;
+                antecesor[*itr] = idVrtActual; // consecuentemente se cambia el antecesor;
+            }
+        visitado[idVrtActual] = true;
+        
+        if (idVrtActual != idVrtD) { // Encuentra el más cercano no visitado todavía:
+            int idVrtNuevo = -1; // para indicar que no se pudo encontrar un vértice no visitado más cercano ==> no existe camino entre idVrtO e idVrtD
+            int menorDistancia = INT_MAX;
+            for (int i = 0; i < vectorVrts.size(); i++)
+                if (!visitado[i] && (distancia[i] < menorDistancia)){
+                    idVrtNuevo = i;
+                    menorDistancia = distancia[i];
+                }
+            idVrtActual = idVrtNuevo;
         }
     }
-    camino = caminoMasCorto;
+    if (visitado[idVrtD]){
+        int idVrtVisitado = idVrtD;
+        camino.push_back(idVrtD);
+        for(int i = 0; i < distancia[idVrtD] - 1; i++){
+            camino.push_back(antecesor[idVrtVisitado]);
+            idVrtVisitado = antecesor[idVrtVisitado];
+        }
+        camino.push_back(idVrtO); // para completar el camino
+        reverse(camino.begin(),camino.end());
+    }
+    // se asignan los idVrt a camino
 }
 
 template < typename V, typename A >

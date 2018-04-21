@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
     }*/
         
     vector< int > caminoEncontrado;
-    grafoMuyPeqNoCnx.caminoMasCorto(0, 8, caminoEncontrado);
+    grafoMuyPeqNoCnx.caminoMasCorto(0, 9, caminoEncontrado);
     for(int i = 0; i < caminoEncontrado.size(); i++)
         cout << caminoEncontrado[i] << ',';
     cout << endl;
