@@ -17,7 +17,8 @@
 #include <vector>
 using namespace std;
 
-#include "Grafo.h" 
+#include "Grafo.h"
+#include "Laberinto.h" 
 
 /*
  * 
@@ -85,11 +86,24 @@ int main(int argc, char** argv) {
         cout << endl;
     }*/
         
-    vector< int > caminoEncontrado;
+    /*vector< int > caminoEncontrado;
     grafoMuyPeqNoCnx.caminoMasCorto(0, 9, caminoEncontrado);
     for(int i = 0; i < caminoEncontrado.size(); i++)
         cout << caminoEncontrado[i] << ',';
-    cout << endl;
+    cout << endl;*/
+    
+    /* Prueba de constructor basado en cantidad y probabilidad */
+    int N = 50;
+    int itr = 50000;
+    double probabilidad = 0.5;
+    double cntAdyEsp = probabilidad * N * (N - 1) * 1.0;
+    int acmAdy = 0;
+    for(int i = 0; i < itr; i++){
+        Laberinto lbrt(N,probabilidad);
+        acmAdy += lbrt.obtTotArc();
+    }
+    double prmAdy = acmAdy / (itr * 1.0);
+    cout << "Promedio: " << prmAdy << " esperanza: " << cntAdyEsp << endl;
     return 0;
 }
 

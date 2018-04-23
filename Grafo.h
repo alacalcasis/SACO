@@ -233,7 +233,7 @@ int Grafo< V, A >::obtTotArc() const {
     int rsl = 0;
     for (typename vector< Vrt< V > >::const_iterator itr = vectorVrts.begin(); itr != vectorVrts.end(); itr++)
         rsl = rsl + itr->lstAdy.size();
-    return rsl / 2;
+    return rsl;
 }
 
 template < typename V, typename A >
