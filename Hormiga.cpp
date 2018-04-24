@@ -142,7 +142,6 @@ int Hormiga::seleccionaAdyMasCargada(const Laberinto& lbrt) {
     lbrt.obtIdVrtAdys(idVrtActual, adys);
     // filtrar las adyacencias que llevan a vértices ya recorridos
     filtraVrtsPosibles(adys);
-    // falta seleccionar la adyacencia más cargada de entre las filtradas,
     // recordar que en esta selección se usa azar también --> to-report l-selecciona-por-valoracion [ posibles ]
     // se generan pesos de las adyacencias a idVrtActual con base en su ferormona:
     vector< int > ferormonaNormalizadaLocal;
