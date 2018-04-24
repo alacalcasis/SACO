@@ -138,8 +138,20 @@ int Hormiga::retroceder() {
 
 int Hormiga::seleccionaAdyMasCargada(const Laberinto& lbrt) {
     vector< int > adys;
+    // obtener los idVrt de las adyacencias del vértice donde se encuentra la hormiga
     lbrt.obtIdVrtAdys(idVrtActual, adys);
-    // falta filtrar las adyacencias que llevan a vértices ya recorridos
+    // filtrar las adyacencias que llevan a vértices ya recorridos
+    filtraVrtsPosibles(adys);
     // falta seleccionar la adyacencia más cargada de entre las filtradas,
     // recordar que en esta selección se usa azar también --> to-report l-selecciona-por-valoracion [ posibles ]
+    // se generan pesos de las adyacencias a idVrtActual con base en su ferormona:
+    vector< int > ferormonaNormalizadaLocal;
+    double totalFerormonaLocal = 0.0;
+    // se calcula el total local de ferormona:
+    for(int i = 0; i < adys.size(); i++)
+        totalFerormonaLocal += lbrt.obtDatoAdy(idVrtActual,adys[i]).obtCntFerormona();
+    // se calculan los pesos de las adyacencias con base en su ferormona:
+    for(int i = 0; i < adys.size(); i++)
+        ferormonaNormalizadaLocal.push_back(lbrt.obtDatoAdy(idVrtActual,adys[i]).obtCntFerormona()/totalFerormonaLocal);
+        
 }

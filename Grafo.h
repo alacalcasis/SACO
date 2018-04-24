@@ -130,10 +130,15 @@ private:
     };
 
     // REQ: (f >= 0) && (c >= 0) && (N > 0)
-    // RET: valor único asociado a f, c y N.
+    // RET: valor único asociado a f y c con base en N = vectorVrts.size().
 
     static long fIdUnico(int f, int c, int N) {
-        return ((f == c) ? 0 : (f + c + N * (3 + abs(f - c))));
+        if (f > c) {
+            int t = f;
+            f = c;
+            c = f;
+        }
+        return f * N + c - f * (f + 1) / 2;
     };
 
     // RET: true si falta algún nodo por visitar y false en caso contrario.
@@ -250,7 +255,7 @@ template < typename V, typename A >
 bool Grafo< V, A >::faltanPorVisitar(vector<bool>& v) const {
     bool rsl = true;
     int i = 0;
-    while (i < vectorVrts.size() && ( rsl = v[i] )) 
+    while (i < vectorVrts.size() && (rsl = v[i]))
         i++;
     return !rsl;
 }
@@ -271,28 +276,28 @@ void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino
                 antecesor[*itr] = idVrtActual; // consecuentemente se cambia el antecesor;
             }
         visitado[idVrtActual] = true;
-        
+
         if (idVrtActual != idVrtD) { // Encuentra el más cercano no visitado todavía:
             int idVrtNuevo = -1; // para indicar que no se pudo encontrar un vértice no visitado más cercano ==> no existe camino entre idVrtO e idVrtD
             int menorDistancia = INT_MAX;
             for (int i = 0; i < vectorVrts.size(); i++)
-                if (!visitado[i] && (distancia[i] < menorDistancia)){
+                if (!visitado[i] && (distancia[i] < menorDistancia)) {
                     idVrtNuevo = i;
                     menorDistancia = distancia[i];
                 }
             idVrtActual = idVrtNuevo;
         }
     }
-    if (visitado[idVrtD]){ // se asignan los idVrt a camino
+    if (visitado[idVrtD]) { // se asignan los idVrt a camino
         int idVrtVisitado = idVrtD;
         camino.push_back(idVrtD);
-        for(int i = 0; i < distancia[idVrtD] - 1; i++){
+        for (int i = 0; i < distancia[idVrtD] - 1; i++) {
             camino.push_back(antecesor[idVrtVisitado]);
             idVrtVisitado = antecesor[idVrtVisitado];
         }
         camino.push_back(idVrtO); // para completar el camino
-        reverse(camino.begin(),camino.end());
-    } 
+        reverse(camino.begin(), camino.end());
+    }
 }
 
 template < typename V, typename A >
