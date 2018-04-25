@@ -155,11 +155,10 @@ Grafo< V, A >::Grafo(int cantidadVrt, double probabilidadAdy) {
     srand(time(NULL)); /* initialize random seed: */
     for (int i = 0; i < cantidadVrt; i++)
         for (int j = i + 1; j < cantidadVrt; j++)
-            if ((rand() % 1000) / 1000.0 < probabilidadAdy) {
+            if (((double)(rand() % 1000)) / 1000.0 < probabilidadAdy) {
                 vectorVrts[i].lstAdy.push_front(j);
                 vectorVrts[j].lstAdy.push_front(i);
                 long idUnico = fIdUnico(i, j, cantidadVrt);
-                //mapAdys[idUnico] = A();
                 mapAdys.insert(typename map< long, A >::value_type(idUnico, A()));
             }
 }
