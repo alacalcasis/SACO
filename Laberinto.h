@@ -91,7 +91,7 @@ public:
     // EFE: retorna en "camino" los índices de los vértices que conforman el
     //      camino más corto entre idVrtO y idVrtD encontrado por la colonia de hormigas.
     //      retorna la longitud de este camino.    
-    int caminoEncontrado(int idVrtO, int idVrtD, int* camino) const;
+    int caminoEncontrado(int idVrtO, int idVrtD, vector<int>& camino) const;
     
     // EFE: retorna la suma total de la ferormona de las adyacencias;
     double sumaTotalFerormona() const;

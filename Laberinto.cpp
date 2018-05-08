@@ -59,11 +59,11 @@ int Laberinto::obtTotVrt() const {
 }
 
 int Laberinto::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
-    // falta implementar algoritmo de Dijkstra
+    laberinto.caminoMasCorto(idVrtO, idVrtD, camino);
 }
 
-int Laberinto::caminoEncontrado(int idVrtO, int idVrtD, int* camino) const {
-    // generarlo usando la valoración de las adyacencias
+int Laberinto::caminoEncontrado(int idVrtO, int idVrtD, vector<int>& camino) const {
+    // falta
 }
 
 double Laberinto::sumaTotalFerormona() const {
