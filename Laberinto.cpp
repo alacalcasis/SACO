@@ -51,19 +51,20 @@ Adyacencia Laberinto::obtDatoAdy(int idVrtO, int idVrtD) const {
 }
 
 int Laberinto::obtTotArc() const {
-    laberinto.obtTotArc();
+    return laberinto.obtTotArc();
 }
 
 int Laberinto::obtTotVrt() const {
-    laberinto.obtTotVrt();
+    return laberinto.obtTotVrt();
 }
 
 int Laberinto::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
-    laberinto.caminoMasCorto(idVrtO, idVrtD, camino);
+    return laberinto.caminoMasCorto(idVrtO, idVrtD, camino);
 }
 
 int Laberinto::caminoEncontrado(int idVrtO, int idVrtD, vector<int>& camino) const {
     // falta
+    return 0;
 }
 
 double Laberinto::sumaTotalFerormona() const {

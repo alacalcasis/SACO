@@ -152,5 +152,5 @@ int Hormiga::seleccionaAdyMasCargada(const Laberinto& lbrt) {
     // se calculan los pesos de las adyacencias con base en su ferormona:
     for(int i = 0; i < adys.size(); i++)
         ferormonaNormalizadaLocal.push_back(lbrt.obtDatoAdy(idVrtActual,adys[i]).obtCntFerormona()/totalFerormonaLocal);
-        
+    return adys[0];//falta    
 }

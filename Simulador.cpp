@@ -34,7 +34,7 @@ void Simulador::ejecutar(int p) {
     int iteracion = 0;
     int cntdHormigasQueHanSalido = 0;
     int cntdHormigasSinRegresar = hormigas.size();
-    while ((p > 0)&&(iteracion < p)||(cntdHormigasSinRegresar > 0)) {
+    while (((p > 0)&&(iteracion < p))||(cntdHormigasSinRegresar > 0)) {
         // Si hay hormigas que no han salido del hormiguero, sacarlas:
         if (cntdHormigasQueHanSalido < hormigas.size()){
             hormigas[cntdHormigasQueHanSalido].salir(laberinto.obtIdVrtInicial());

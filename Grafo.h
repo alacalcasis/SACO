@@ -98,7 +98,7 @@ public:
     // REQ: 0 <= idVrt1 < N && 0 <= idVrt2 < N
     // EFE: retorna en "camino" los índices de los vértices que conforman el
     //      camino más corto entre idVrtO y idVrtD.
-    void caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const;
+    int caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const;
 
     /* MÉTODOS MODIFICADORES BÁSICOS */
 
@@ -260,7 +260,7 @@ bool Grafo< V, A >::faltanPorVisitar(vector<bool>& v) const {
 }
 
 template < typename V, typename A >
-void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
+int Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino) const {
     // Basado en algoritmo de Dijkstra: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
     vector< bool > visitado(vectorVrts.size(), false); // visitados[idVrt] == true indica que idVrt ha sido visitado
     vector< int > distancia(vectorVrts.size(), INT_MAX); // distancia[idVrt] representa la menor distancia encontrada de idVrtO a idVrt
@@ -297,6 +297,7 @@ void Grafo< V, A >::caminoMasCorto(int idVrtO, int idVrtD, vector< int >& camino
         camino.push_back(idVrtO); // para completar el camino
         reverse(camino.begin(), camino.end());
     }
+    return camino.size();
 }
 
 template < typename V, typename A >
