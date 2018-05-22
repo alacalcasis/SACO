@@ -13,6 +13,8 @@
 
 #include "Hormiga.h"
 
+Laberinto* Hormiga::laberinto_p = 0; // inicialización de variable static privada
+
 Hormiga::Hormiga() : idVrtActual(0), haSalido(false), haRegresado(false), destino('F'), enRetroceso(0), longitudSolucion(0), deltaFerormona(0.0) {
 }
 
@@ -153,4 +155,8 @@ int Hormiga::seleccionaAdyMasCargada(const Laberinto& lbrt) {
     for(int i = 0; i < adys.size(); i++)
         ferormonaNormalizadaLocal.push_back(lbrt.obtDatoAdy(idVrtActual,adys[i]).obtCntFerormona()/totalFerormonaLocal);
     return adys[0];//falta    
+}
+
+void Hormiga::asgLaberinto(Laberinto& lbrt) {
+    Hormiga::laberinto_p = &lbrt; // asigna valor al puntero, indirectamente a referencia!!
 }

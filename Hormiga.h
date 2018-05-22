@@ -17,6 +17,7 @@
 #include <vector>
 #include <algorithm>    // std::remove_if
 #include <stdlib.h>     /* srand, rand */
+#include <iostream>
 using namespace std;
 
 #include "Laberinto.h"
@@ -71,9 +72,13 @@ public:
     // EFE: la hormiga avanza a un vértice adyacente.
     void mover(const Laberinto& lbrt);
 
-
+    // EFE: asigna la referencia al laberinto que accesarán todas las hormigas.
+    static void asgLaberinto(Laberinto& lbrt);
 
 private:
+    /* VARIABLES STATIC PRIVADAS PARA ACCESO AL LABERINTO */
+    static Laberinto* laberinto_p;
+    
     /* MÉTODOS PRIVADOS */
 
     // REQ: memoria.size() > 0.
@@ -100,8 +105,6 @@ private:
     int enRetroceso; // si es mayor a cero, la hormiga está retrocediendo esta cantidad de pasos porque topó con un camino sin salida
     int longitudSolucion; // registra la longitud de la solución encontrada para moderar su aporte de ferormona en su retorno
     double deltaFerormona; // representa cuánta ferormona aporta la hormiga a cada link y se modula con base en length_solución x encuentros
-
-
 };
 #endif /* HORMIGA_H */
 

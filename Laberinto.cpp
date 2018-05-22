@@ -17,6 +17,7 @@ Laberinto::Laberinto(int cantidadVrts, double probabilidadAdy) : laberintoPtr(sh
 }
 
 Laberinto::Laberinto(ifstream& archivo) : laberintoPtr(shared_ptr< Grafo< int, Adyacencia > >(new Grafo< int, Adyacencia>(archivo))), laberinto(*laberintoPtr), idVrtInicial(0), idVrtFinal(0) {
+    cntVrts = laberinto.obtTotVrt();
 }
 
 Laberinto::Laberinto(const Laberinto& orig) : laberintoPtr(shared_ptr< Grafo< int, Adyacencia > >(new Grafo< int, Adyacencia>(*orig.laberintoPtr))), cntVrts(orig.cntVrts), idVrtInicial(orig.idVrtInicial), idVrtFinal(orig.idVrtFinal), laberinto(*laberintoPtr) {

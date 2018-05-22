@@ -18,7 +18,8 @@
 using namespace std;
 
 #include "Grafo.h"
-#include "Laberinto.h" 
+#include "Laberinto.h"
+#include "Hormiga.h" 
 
 /*
  * 
@@ -75,7 +76,10 @@ int main(int argc, char** argv) {
     
     Grafo< int, int> grafoInts2(grafoInts); */
     ifstream archGrafoMuyPeqNoCnx ("laberintop.txt", ios::in);
-    Grafo< int, int > grafoMuyPeqNoCnx(archGrafoMuyPeqNoCnx);
+    Laberinto laberintoMuyPeqNoCnx(archGrafoMuyPeqNoCnx);
+    Hormiga::asgLaberinto(laberintoMuyPeqNoCnx);
+    Hormiga hormiga;
+    hormiga.pruebaAccesoLaberinto();
     
     /*for(int i = 0; i < grafoMuyPeqNoCnx.obtTotVrt(); i++){
         vector< int > adys;
@@ -93,6 +97,7 @@ int main(int argc, char** argv) {
     cout << endl;*/
     
     /* Prueba de constructor basado en cantidad y probabilidad */
+    /*
     int N = 50;
     int itr = 50000;
     double probabilidad = 0.5;
@@ -103,7 +108,7 @@ int main(int argc, char** argv) {
         acmAdy += lbrt.obtTotArc();
     }
     double prmAdy = acmAdy / (itr * 1.0);
-    cout << "Promedio: " << prmAdy << " esperanza: " << cntAdyEsp << endl;
+    cout << "Promedio: " << prmAdy << " esperanza: " << cntAdyEsp << endl;*/
     return 0;
 }
 
