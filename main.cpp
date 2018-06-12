@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
     Laberinto laberintoMuyPeqNoCnx(archGrafoMuyPeqNoCnx);
     Hormiga::asgLaberinto(laberintoMuyPeqNoCnx);
     Hormiga hormiga;
-    hormiga.pruebaAccesoLaberinto();
+    //hormiga.pruebaAccesoLaberinto();
     
     /*for(int i = 0; i < grafoMuyPeqNoCnx.obtTotVrt(); i++){
         vector< int > adys;

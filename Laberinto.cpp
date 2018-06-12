@@ -51,8 +51,8 @@ Adyacencia Laberinto::obtDatoAdy(int idVrtO, int idVrtD) const {
     return laberinto.obtDatoAdy(idVrtO, idVrtD);
 }
 
-int Laberinto::obtTotArc() const {
-    return laberinto.obtTotArc();
+int Laberinto::obtTotAdy() const {
+    return laberinto.obtTotAdy();
 }
 
 int Laberinto::obtTotVrt() const {

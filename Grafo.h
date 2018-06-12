@@ -17,7 +17,7 @@
 #include <fstream>
 #include <vector>
 #include <list>
-#include <map>
+#include <unordered_map>
 #include <stack>
 #include <algorithm>
 #include <stdlib.h>     /* srand, rand */
@@ -88,7 +88,7 @@ public:
     A obtDatoAdy(int idVrtO, int idVrtD) const;
 
     // EFE: retorna el total de arcos o adyacencias en el grafo.
-    int obtTotArc() const;
+    int obtTotAdy() const;
 
     // EFE: retorna el total de vértices en el grafo.
     int obtTotVrt() const;
@@ -145,7 +145,7 @@ private:
     bool faltanPorVisitar(vector< bool >& v) const;
 
     vector< Vrt< V > > vectorVrts; // vector de vértices
-    map< long, A > mapAdys; // map de adyacencias
+    unordered_map< long, A > mapAdys; // map de adyacencias
 };
 
 template < typename V, typename A >
@@ -159,7 +159,7 @@ Grafo< V, A >::Grafo(int cantidadVrt, double probabilidadAdy) {
                 vectorVrts[i].lstAdy.push_front(j);
                 vectorVrts[j].lstAdy.push_front(i);
                 long idUnico = fIdUnico(i, j, cantidadVrt);
-                mapAdys.insert(typename map< long, A >::value_type(idUnico, A()));
+                mapAdys.insert(typename unordered_map< long, A >::value_type(idUnico, A()));
             }
 }
 
@@ -233,7 +233,7 @@ A Grafo< V, A >::obtDatoAdy(int idVrtO, int idVrtD) const {
 }
 
 template < typename V, typename A >
-int Grafo< V, A >::obtTotArc() const {
+int Grafo< V, A >::obtTotAdy() const {
     int rsl = 0;
     for (typename vector< Vrt< V > >::const_iterator itr = vectorVrts.begin(); itr != vectorVrts.end(); itr++)
         rsl = rsl + itr->lstAdy.size();

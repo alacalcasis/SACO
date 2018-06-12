@@ -73,7 +73,7 @@ public:
     Adyacencia obtDatoAdy(int idVrtO, int idVrtD) const;
 
     // EFE: retorna el total de arcos o adyacencias en el grafo.
-    int obtTotArc() const;
+    int obtTotAdy() const;
 
     // EFE: retorna el total de vértices en el grafo.
     int obtTotVrt() const;
